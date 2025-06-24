@@ -1,0 +1,468 @@
+/* === התחלה: עיצוב בסיסי === */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #e0e6f0;
+  padding: 20px;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #003366;
+}
+
+/* === סוף: עיצוב בסיסי === */
+/* === התחלה: פריסת עמוד מלאה לתחתית footer === */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #e0e6f0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+main {
+  flex: 1;
+}
+
+/* === סוף: פריסת עמוד מלאה לתחתית footer === */
+/* === התחלה: אזור שליטה === */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+input {
+  padding: 5px;
+  font-size: 16px;
+}
+
+button {
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* === סוף: אזור שליטה === */
+
+/* === התחלה: רשימת אנשי קשר === */
+ul#contactsList {
+  list-style: none;
+  padding: 0;
+  max-width: 900px;
+  margin: auto;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.contact:hover {
+  background-color: #f0f0f0;
+}
+
+.contact img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* === סוף: רשימת אנשי קשר === */
+
+/* === התחלה: כפתורים בתוך כרטיס איש קשר === */
+.contact div {
+  display: flex;
+  gap: 6px;
+}
+
+.contact button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.contact button img {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* === סוף: כפתורים בתוך כרטיס איש קשר === */
+
+/* === התחלה: חלון קופץ (popup) === */
+#popup {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#popup.show {
+  display: flex;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  position: relative;
+}
+
+#closePopup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* === סוף: חלון קופץ (popup) === */
+
+/* === התחלה: מבנה עמוד כללי === */
+footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+section {
+  margin-bottom: 3em;
+}
+
+main {
+  padding: 2em;
+  animation: fadeIn 1s ease-in;
+  flex-grow: 1;
+}
+
+/* === סוף: מבנה עמוד כללי === */
+
+/* === התחלה: גוף ודף כללי נוסף === */
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* === סוף: גוף ודף כללי נוסף === */
+
+/* === התחלה: Header וניווט === */
+header {
+  background: #48525a;
+  color: white;
+  padding: 1em 2em;
+  top: 0;
+  z-index: 100;
+  position: relative;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #f1f5f8;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #b7d1e4;
+}
+
+/* === סוף: Header וניווט === */
+
+/* === התחלה: עמוד אודות === */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.about-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.team-photos {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.team-member {
+  text-align: center;
+}
+
+.team-member img {
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.team-member h3 {
+  margin-top: 10px;
+}
+
+/* === סוף: עמוד אודות === */
+
+/* === התחלה: עיצוב מובייל (ריספונסיביות) === */
+@media (max-width: 768px) {
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  #peopleCount {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #searchInput {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  .buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .buttonGroup button {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+  }
+
+  .buttonGroup button img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .contact img {
+    margin-bottom: 10px;
+  }
+
+  .contact div {
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  header img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .main-nav {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .nav-links li a {
+    padding: 6px 10px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #f1f5f8;
+    font-weight: 500;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  .nav-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  footer {
+    padding: 1em 0.5em;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  footer .container {
+    padding: 0;
+  }
+
+  #popup {
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .popup-content {
+    width: 100%;
+    max-width: 320px;
+    margin: auto;
+    border-radius: 12px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+  }
+
+  #popupDetails img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+
+  #popupTitle {
+    font-size: 1.4em;
+    color: #003366;
+    margin-bottom: 10px;
+  }
+
+  #popupDetails p {
+    font-size: 15px;
+    margin: 6px 0;
+  }
+
+  #popupDetails p strong {
+    margin-right: 5px;
+  }
+
+  #closePopup {
+    top: 10px;
+    right: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+/* === סוף: עיצוב מובייל (ריספונסיביות) === */
+
+
+/* === התחלה: אפקט רקע === */
+/* === התחלה: מצב כהה === */
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+body.dark-mode .contact {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode header,
+body.dark-mode footer {
+  background-color: #222;
+}
+
+/* === סוף: מצב כהה === */
+
+/* === סוף: אפקט רקע === */
