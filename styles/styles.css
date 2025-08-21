@@ -219,7 +219,7 @@ header {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 15px;
+  gap: 30px;
   margin: 0;
   padding: 0;
 }
@@ -464,5 +464,6 @@ body.dark-mode footer {
 }
 
 /* === סוף: מצב כהה === */
+
 
 /* === סוף: אפקט רקע === */
