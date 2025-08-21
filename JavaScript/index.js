@@ -103,9 +103,11 @@ contactsList.addEventListener("click", function (e) {
     openPopup(contact[0], content);
   }
 
-  if (action === "delete") {
-    contacts.splice(index, 1);
-    renderList(contacts);
+   if (action === "delete") {
+    if (confirm(`Are you sure you want to delete the contact "${contact[0]}"?`)) {
+      contacts.splice(index, 1);
+      renderList(contacts);
+    }
   }
 
   if (action === "edit") {
@@ -162,7 +164,12 @@ contactsList.addEventListener("click", function (e) {
         alert("Age must be a non-negative number.");
         return;
       }
-
+    //בודק שלו לעדכין שם שכבר ברשימה
+        if (contacts.find(c => c[0].toLowerCase() === name.toLowerCase())) {
+        alert("Name already exists!");
+        return;
+      }
+      
       // פונקציה לבדוק אם מספר טלפון תקין (ישראלי)
       function isValidPhone(phone) {
         const cleaned = phone.replace(/[\s-]/g, ""); // מסיר רווחים ומקפים
@@ -307,3 +314,4 @@ closePopup.addEventListener("click", closePopupFunc);
 
 // טען רשימה בהתחלה
 renderList(contacts);
+
