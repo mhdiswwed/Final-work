@@ -322,11 +322,12 @@ renderList(contacts);
 
 // --- טעינה מ-localStorage או התחלה עם נתוני ברירת מחדל ---
 let contacts = JSON.parse(localStorage.getItem("contacts")) || [
-  ["Bertie Yates", "0501234567", "Tel Aviv", 28, "images/bertie.jpg", "bertie@example.com", "Best friend from college", "קדור סל"],
-  ["Hester Hogan", "0507654321", "Haifa", 34, "images/hester.jpg", "hester@example.com", "Loves hiking and coffee", "קדור סל"],
-  ["Larry Little", "0522223333", "Jerusalem", 40, "images/larry.jpg", "larry@example.com", "Works in finance", "קדור סל"],
-  ["Sean Walsh", "0539998888", "Eilat", 22, "images/sean.jpg", "sean@example.com", "Enjoys surfing and traveling", "קדור סל"]
+  ["Bertie Yates", "0501234567", "Tel Aviv", 28, "images/bertie.jpg", "bertie@example.com", "Best friend from college", "Soccer"],
+  ["Hester Hogan", "0507654321", "Haifa", 34, "images/hester.jpg", "hester@example.com", "Loves hiking and coffee", "Painting"],
+  ["Larry Little", "0522223333", "Jerusalem", 40, "images/larry.jpg", "larry@example.com", "Works in finance", "Chess"],
+  ["Sean Walsh", "0539998888", "Eilat", 22, "images/sean.jpg", "sean@example.com", "Enjoys surfing and traveling", "Photography"]
 ];
+
 
 // --- פונקציה לשמור ל-localStorage ---
 function saveContacts() {
@@ -610,6 +611,7 @@ closePopup.addEventListener("click", closePopupFunc);
 
 // טעינת הרשימה
 renderList(contacts);
+
 
 
 
