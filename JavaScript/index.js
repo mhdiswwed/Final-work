@@ -432,14 +432,14 @@ contactsList.addEventListener("click", function (e) {
 
   if (action === "edit") {
     const form = `
-      <form id="editForm">
-        <input type="text" id="editName" value="${contact[0]}" required><br><br>
-        <input type="text" id="editPhone" value="${contact[1]}" required><br><br>
+       <form id="editForm">
+        <input type="text" id="editName" value="${contact[0]}" placeholder="Name" required><br><br>
+        <input type="text" id="editPhone" value="${contact[1]}" placeholder="Phone" required><br><br>
         <input type="text" id="editAddress" value="${contact[2]}" placeholder="Address"><br><br>
         <input type="number" id="editAge" value="${contact[3]}" min="0" placeholder="Age"><br><br>
-        <input type="email" id="editEmail" value="${contact[5]}" required><br><br>
-        <textarea id="editText" required>${contact[6]}</textarea><br><br>
-        <input type="text" id="editHobby" value="${contact[7]}" required><br><br>
+        <input type="email" id="editEmail" value="${contact[5]}" placeholder="Email"><br><br>
+        <textarea id="editText" placeholder="Text">${contact[6]}</textarea><br><br>
+        <input type="text" id="editHobby" value="${contact[7]}" placeholder="Hobby"><br><br>
         <input type="text" id="editImage" value="${contact[4].startsWith('data:') ? '' : contact[4]}" placeholder="Image URL"><br><br>
         <input type="file" id="editImageFile" accept="image/*"><br><br>
         <button type="submit">Save</button>
@@ -610,6 +610,7 @@ closePopup.addEventListener("click", closePopupFunc);
 
 // טעינת הרשימה
 renderList(contacts);
+
 
 
 
