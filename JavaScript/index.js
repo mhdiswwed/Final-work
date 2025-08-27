@@ -1,4 +1,4 @@
-"use strict";
+/*"use strict";
 
 // מערך דו-ממדי: כל שורה מייצגת איש קשר: [שם, טלפון, כתובת, גיל, תמונה, אמיל, טקסט חופשי]
 const contacts = [
@@ -314,4 +314,265 @@ closePopup.addEventListener("click", closePopupFunc);
 
 // טען רשימה בהתחלה
 renderList(contacts);
+*/
+
+
+"use strict";
+
+// --- טעינה מ-localStorage או התחלה עם נתוני ברירת מחדל ---
+let contacts = JSON.parse(localStorage.getItem("contacts")) || [
+  ["Bertie Yates", "0501234567", "Tel Aviv", 28, "images/bertie.jpg", "bertie@example.com", "Best friend from college", "קדור סל"],
+  ["Hester Hogan", "0507654321", "Haifa", 34, "images/hester.jpg", "hester@example.com", "Loves hiking and coffee", "קדור סל"],
+  ["Larry Little", "0522223333", "Jerusalem", 40, "images/larry.jpg", "larry@example.com", "Works in finance", "קדור סל"],
+  ["Sean Walsh", "0539998888", "Eilat", 22, "images/sean.jpg", "sean@example.com", "Enjoys surfing and traveling", "קדור סל"]
+];
+
+// --- פונקציה לשמור ל-localStorage ---
+function saveContacts() {
+  localStorage.setItem("contacts", JSON.stringify(contacts));
+}
+
+// קבלת רכיבים מהמסך
+const contactsList = document.getElementById("contactsList");
+const searchInput = document.getElementById("searchInput");
+const peopleCount = document.getElementById("peopleCount");
+const popup = document.getElementById("popup");
+const popupDetails = document.getElementById("popupDetails");
+const popupTitle = document.getElementById("popupTitle");
+const closePopup = document.getElementById("closePopup");
+const clearAllBtn = document.getElementById("clearAllBtn");
+const addBtn = document.getElementById("addBtn");
+
+// מציג את אנשי הקשר במסך
+function renderList(list) {
+  contactsList.innerHTML = "";
+  const messageElement = document.getElementById("noContactsMessage");
+
+  if (list.length === 0) {
+    peopleCount.textContent = "0 people";
+    messageElement.textContent = "There are no contacts in the system.";
+    return;
+  } else {
+    messageElement.textContent = "";
+  }
+
+  list.sort((a, b) => a[0].localeCompare(b[0]));
+  list.forEach((contact, index) => {
+    const li = document.createElement("li");
+    li.className = "contact";
+    li.innerHTML = `
+      <img src="${contact[4]}" alt="${contact[0]}">
+      <span>${contact[0]}</span>
+      <span class="contact-phone">${contact[1]}</span>
+      <div>
+        <button data-action="info" data-index="${index}">
+          <img src="images/icons8-info-128.png" alt="info" title="info" width="18" height="18">
+        </button>
+        <button data-action="edit" data-index="${index}">
+          <img src="images/icons8-edit-64.png" alt="edit" title="edit" width="18" height="18">
+        </button>
+        <button data-action="delete" data-index="${index}">
+          <img src="images/icons8-delete-100.png" alt="delete" title="delete" width="18" height="18">
+        </button>
+      </div>
+    `;
+
+    li.addEventListener("mouseover", () => li.classList.add("hovered"));
+    li.addEventListener("mouseout", () => li.classList.remove("hovered"));
+
+    contactsList.appendChild(li);
+  });
+  peopleCount.textContent = `${contacts.length} people`;
+}
+
+// פותח חלון קופץ
+function openPopup(title, contentHTML) {
+  popupTitle.textContent = title;
+  popupDetails.innerHTML = contentHTML;
+  popup.classList.add("show");
+}
+
+// סוגר את החלון הקופץ
+function closePopupFunc() {
+  popup.classList.remove("show");
+}
+
+// לחיצה על כפתורי מידע/עריכה/מחיקה
+contactsList.addEventListener("click", function (e) {
+  const button = e.target.closest("button");
+  if (!button) return;
+
+  const action = button.dataset.action;
+  const index = button.dataset.index;
+  if (!action || index === undefined) return;
+
+  const contact = contacts[index];
+
+  if (action === "info") {
+    let content = `
+      <p><img src="${contact[4]}" alt="Contact Image" width="100" height="100"></p>
+      <p><strong>Phone:</strong> ${contact[1]}</p>
+      <p><strong>Address:</strong> ${contact[2]}</p>
+      <p><strong>Age:</strong> ${contact[3]}</p>
+      <p><strong>Email:</strong> ${contact[5]}</p>
+      <p><strong>Text:</strong> ${contact[6]}</p>
+      <p><strong>Hobby:</strong> ${contact[7]}</p>
+    `;
+    openPopup(contact[0], content);
+  }
+
+  if (action === "delete") {
+    if (confirm(`Are you sure you want to delete the contact "${contact[0]}"?`)) {
+      contacts.splice(index, 1);
+      renderList(contacts);
+      saveContacts(); // 🔥 שומר אחרי מחיקה
+    }
+  }
+
+  if (action === "edit") {
+    const form = `
+      <form id="editForm">
+        <input type="text" id="editName" value="${contact[0]}" required><br><br>
+        <input type="text" id="editPhone" value="${contact[1]}" required><br><br>
+        <input type="text" id="editAddress" value="${contact[2]}" placeholder="Address"><br><br>
+        <input type="number" id="editAge" value="${contact[3]}" min="0" placeholder="Age"><br><br>
+        <input type="email" id="editEmail" value="${contact[5]}" required><br><br>
+        <textarea id="editText" required>${contact[6]}</textarea><br><br>
+        <input type="text" id="editHobby" value="${contact[7]}" required><br><br>
+        <input type="text" id="editImage" value="${contact[4].startsWith('data:') ? '' : contact[4]}" placeholder="Image URL"><br><br>
+        <input type="file" id="editImageFile" accept="image/*"><br><br>
+        <button type="submit">Save</button>
+      </form>
+    `;
+
+    openPopup("Edit Contact", form);
+
+    document.getElementById("editForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+
+      const name = document.getElementById("editName").value.trim();
+      const phone = document.getElementById("editPhone").value.trim();
+      const address = document.getElementById("editAddress").value.trim();
+      const age = parseInt(document.getElementById("editAge").value.trim(), 10);
+      const email = document.getElementById("editEmail").value.trim();
+      const text = document.getElementById("editText").value.trim();
+      const hobby = document.getElementById("editHobby").value.trim();
+      const imageUrlInput = document.getElementById("editImage").value.trim();
+      const fileInput = document.getElementById("editImageFile");
+
+      if (isNaN(age) || age < 0) {
+        alert("Age must be a non-negative number.");
+        return;
+      }
+
+      let image = imageUrlInput || contact[4];
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          image = e.target.result;
+          finishEdit();
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        finishEdit();
+      }
+
+      function finishEdit() {
+        contacts[index] = [name, phone, address, age, image, email, text, hobby];
+        closePopupFunc();
+        renderList(contacts);
+        saveContacts(); // 🔥 שומר אחרי עריכה
+      }
+    });
+  }
+});
+
+// הוספת איש קשר
+addBtn.addEventListener("click", function () {
+  const form = `
+    <form id="addForm">
+      <input type="text" id="addName" placeholder="Name" required><br><br>
+      <input type="text" id="addPhone" placeholder="Phone" required><br><br>
+      <input type="text" id="addAddress" placeholder="Address"><br><br>
+      <input type="number" id="addAge" placeholder="Age" min="0"><br><br>
+      <input type="email" id="addEmail" placeholder="Email"><br><br>
+      <textarea id="addText" placeholder="Text"></textarea><br><br>
+      <input type="text" id="addImage" placeholder="Image URL"><br><br>
+      <input type="file" id="addImageFile" accept="image/*"><br><br>
+      <input type="text" id="addHobby" placeholder="Hobby"><br><br>
+      <button type="submit">Save</button>
+    </form>
+  `;
+  openPopup("Add Contact", form);
+
+  document.getElementById("addForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+
+    const name = document.getElementById("addName").value.trim();
+    const phone = document.getElementById("addPhone").value.trim();
+    const address = document.getElementById("addAddress").value.trim();
+    const age = parseInt(document.getElementById("addAge").value.trim(), 10);
+    const email = document.getElementById("addEmail").value.trim();
+    const text = document.getElementById("addText").value.trim();
+    const imageUrlInput = document.getElementById("addImage").value.trim();
+    const fileInput = document.getElementById("addImageFile");
+    const hobby = document.getElementById("addHobby").value.trim();
+
+    if (isNaN(age) || age < 0) {
+      alert("Age must be a non-negative number.");
+      return;
+    }
+
+    let image = imageUrlInput || "images/default.jpg";
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        image = e.target.result;
+        finishAdd();
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      finishAdd();
+    }
+
+    function finishAdd() {
+      contacts.push([name, phone, address, age, image, email, text, hobby]);
+      closePopupFunc();
+      renderList(contacts);
+      saveContacts(); // 🔥 שומר אחרי הוספה
+    }
+  });
+});
+
+// חיפוש
+searchInput.addEventListener("input", function () {
+  const term = this.value.toLowerCase();
+  const filtered = contacts.filter(c => c[0].toLowerCase().includes(term));
+  renderList(filtered);
+});
+
+// ניקוי כל הרשימה
+clearAllBtn.addEventListener("click", function () {
+  if (confirm("Delete all contacts?")) {
+    contacts.length = 0;
+    renderList(contacts);
+    saveContacts(); // 🔥 גם פה
+  }
+});
+
+// מצב כהה
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("toggleEffectBtn");
+  btn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+  });
+});
+
+// סגירת חלון קופץ
+closePopup.addEventListener("click", closePopupFunc);
+
+// טעינת הרשימה
+renderList(contacts);
+
+
 
