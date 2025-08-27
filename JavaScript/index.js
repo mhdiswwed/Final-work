@@ -86,7 +86,7 @@ contactsList.addEventListener("click", function (e) {
   if (!button) return;
 
   const action = button.dataset.action;
-  const index = button.dataset.index;
+   const index = parseInt(button.dataset.index, 10);
   if (!action || index === undefined) return;
 
   const contact = contacts[index];
@@ -164,8 +164,9 @@ contactsList.addEventListener("click", function (e) {
         alert("Age must be a non-negative number.");
         return;
       }
-    //בודק שלו לעדכין שם שכבר ברשימה
-        if (contacts.find(c => c[0].toLowerCase() === name.toLowerCase())) {
+    // בדיקה אם השם כבר קיים אצל מישהו אחר
+      const newName = name.toLowerCase();
+      if (contacts.some((c, i) => i !== index && c[0].toLowerCase() === newName)) {
         alert("Name already exists!");
         return;
       }
@@ -403,7 +404,7 @@ contactsList.addEventListener("click", function (e) {
   if (!button) return;
 
   const action = button.dataset.action;
-  const index = button.dataset.index;
+  const index = parseInt(button.dataset.index, 10);
   if (!action || index === undefined) return;
 
   const contact = contacts[index];
@@ -460,11 +461,27 @@ contactsList.addEventListener("click", function (e) {
       const imageUrlInput = document.getElementById("editImage").value.trim();
       const fileInput = document.getElementById("editImageFile");
 
-      if (isNaN(age) || age < 0) {
-        alert("Age must be a non-negative number.");
+  
+
+      // בדיקה אם השם כבר קיים אצל מישהו אחר
+      const newName = name.toLowerCase();
+      if (contacts.some((c, i) => i !== index && c[0].toLowerCase() === newName)) {
+        alert("Name already exists!");
         return;
       }
 
+      // בדיקה אם מספר טלפון תקין
+      function isValidPhone(phone) {
+        const cleaned = phone.replace(/[\s-]/g, "");
+        const regex = /^05\d{8}$/;
+        return regex.test(cleaned);
+      }
+      if (!isValidPhone(phone)) {
+        alert("Phone number must start with 05 and be 10 digits long.");
+        return;
+      }
+
+      // תמונה: URL או קובץ
       let image = imageUrlInput || contact[4];
       if (fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
@@ -518,12 +535,31 @@ addBtn.addEventListener("click", function () {
     const fileInput = document.getElementById("addImageFile");
     const hobby = document.getElementById("addHobby").value.trim();
 
+    // 💥 בדיקות לפני הכל
     if (isNaN(age) || age < 0) {
       alert("Age must be a non-negative number.");
       return;
     }
+//פונקציה בודקת שאים שם קזה כבר
+    if (contacts.find(c => c[0].toLowerCase() === name.toLowerCase())) {
+      alert("Name already exists!");
+      return;
+    }
+
+    // פונקציה לבדוק אם מספר טלפון תקין (ישראלי)
+    function isValidPhone(phone) {
+      const cleaned = phone.replace(/[\s-]/g, ""); // מסיר רווחים ומקפים
+      const regex = /^05\d{8}$/; // מתחיל ב-05 ואחריו 8 ספרות
+      return regex.test(cleaned);
+    }
+    if (!isValidPhone(phone)) {
+      alert("Phone number must start with 05 and be 10 digits long.");
+      return;
+    }
 
     let image = imageUrlInput || "images/default.jpg";
+
+    // ⏳ אם נבחר קובץ – נטען אותו קודם
     if (fileInput.files && fileInput.files[0]) {
       const reader = new FileReader();
       reader.onload = function (e) {
@@ -534,6 +570,7 @@ addBtn.addEventListener("click", function () {
     } else {
       finishAdd();
     }
+
 
     function finishAdd() {
       contacts.push([name, phone, address, age, image, email, text, hobby]);
@@ -573,6 +610,10 @@ closePopup.addEventListener("click", closePopupFunc);
 
 // טעינת הרשימה
 renderList(contacts);
+
+
+
+
 
 
 
